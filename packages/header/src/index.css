@@ -1,0 +1,26 @@
+.menu {
+    display: flex;
+    /*justify-content: space-between;*/
+    gap: 8px;
+    font-size: 14px;
+    align-items: center;
+    padding: 0;
+    list-style: none;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: rgb(229, 229, 229);
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.menu li a.active {
+    font-weight: bold;
+}
+
+.menu .logo img {
+    max-height: 35px;
+    margin-top: 4px;
+    margin-right: 20px;
+}

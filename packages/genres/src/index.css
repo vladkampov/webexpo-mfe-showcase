@@ -1,0 +1,25 @@
+.genres {
+    list-style: none;
+    padding: 0;
+    margin-left: -16px;
+}
+
+.genres li a {
+    color: rgb(229, 229, 229);
+    text-decoration: none;
+    padding: 10px 16px;
+    display: block;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 32px;
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(255,255,255,0.1) 100%);
+    transition: background-position 0.3s, border-bottom-color 0.3s, font-weight 0.3s;
+}
+
+.genres li a:hover {
+    background-position: 200px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.genres li a.active {
+    font-weight: bold;
+}

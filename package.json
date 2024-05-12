@@ -1,0 +1,27 @@
+{
+  "name": "webexpo-mfe-showcase",
+  "version": "0.0.1",
+  "description": "The repo I used for the talk at WebExpo 2024 about different environments, feature toggles, ab-tests and static overrides.",
+  "repository": "https://github.com/vladkampov/webexpo-mfe-showcase",
+  "author": "Vlad Kampov",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn workspace @kampov/header start\" \"yarn workspace @kampov/genres start\" \"yarn workspace @kampov/movies start\" \"yarn workspace @kampov/root-config start\" \"yarn workspace @kampov/server start\" ",
+    "lint": "eslint ./packages/**/src --ext js,ts,tsx",
+    "turbo": "turbo"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "postcss": "^8.4.38",
+    "postcss-loader": "^8.1.1",
+    "style-loader": "^4.0.0",
+    "typescript-plugin-css-modules": "^5.1.0"
+  },
+  "dependencies": {
+    "turbo": "^1.10.15"
+  }
+}

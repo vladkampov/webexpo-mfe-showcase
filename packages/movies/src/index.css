@@ -1,0 +1,47 @@
+.movies {
+    list-style: none;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.movies img {
+    max-width: 200px;
+}
+
+.movies p {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.movies .title {
+    font-weight: bold;
+}
+
+.movies .type {
+    font-size: 12px;
+    color: rgba(229, 229, 229, 0.6);
+}
+
+.banner {
+    position: relative;
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+}
+
+.banner p {
+    position: absolute;
+    top: 0;
+    left: 24px;
+    margin-bottom: 0;
+
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(229, 229, 229);
+}

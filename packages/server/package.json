@@ -1,0 +1,17 @@
+{
+  "name": "@kampov/server",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node index.js",
+    "build": "echo \"Don't build it\"",
+    "test": "echo \"And don't test it\""
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "type": "commonjs",
+  "engines": {
+    "node": "20.x"
+  }
+}

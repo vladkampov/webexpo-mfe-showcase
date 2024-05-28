@@ -110,7 +110,124 @@
       justify-content: center;
     }
 
+    #debugPanel {
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: #000;
+        color: #fff;
+        padding: 10px;
+        z-index: 1000;
+    }
   </style>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
+
+  <script>
+    async function featureTogglesPanel() {
+      const params = new URLSearchParams(window.location.search);
+      const isDebug = params.has('debug');
+
+      if (!isDebug) {
+        return null;
+      }
+
+      const bundlesLocalOverrideMap = {
+        "@kampov/header": "http://localhost:9001/kampov-header.js",
+        "@kampov/genres": "http://localhost:9002/kampov-genres.js",
+        "@kampov/movies": "http://localhost:9003/kampov-movies.js"
+      }
+
+      const overridesStr = new URLSearchParams(window.location.search).get('overrides');
+      const overrides = JSON.parse(overridesStr || '{}');
+
+      const isDev =  window ? window.location.hostname === "localhost" : true;
+
+      const res = await fetch(isDev ? "//localhost:9004/feature-toggles" : "//webexpo-mfe-showcase-server.vercel.app/feature-toggles");
+      const config = await res.json();
+
+
+      const debugPanel = document.createElement('div');
+      debugPanel.id = 'debugPanel';
+
+      const features = Object.keys(config.toggles);
+      const bundles = Array.from(new Set(['@kampov/header', '@kampov/genres', '@kampov/movies']));
+
+      const featureTogglesTitle = document.createElement('h3');
+      featureTogglesTitle.innerText = 'Feature Toggles';
+      debugPanel.append(featureTogglesTitle);
+
+      const featureTogglesList = document.createElement('div');
+      features.forEach((feature) => {
+          const toggle = document.createElement('p');
+          const button = document.createElement('button');
+          const isEnabled = config.toggles[feature] || overrides?.toggles?.[feature];
+
+          button.innerText = `${feature}: ${isEnabled ? '✅' : '❌'}`;
+
+          button.onclick = (e) => {
+            e.preventDefault();
+
+            if (!overrides.toggles) {
+              overrides.toggles = {};
+            }
+
+            overrides.toggles[feature] = !isEnabled;
+            const overrideString  = JSON.stringify(overrides)
+            params.set('overrides', overrideString);
+
+            window.location.replace(window.location.pathname + '?' + params.toString());
+          }
+
+          toggle.append(button)
+          featureTogglesList.append(toggle);
+      });
+
+      debugPanel.append(featureTogglesList)
+
+      const bundlesTitle = document.createElement('h3');
+      bundlesTitle.innerText = 'Bundles';
+      debugPanel.append(bundlesTitle);
+
+      const bundlesList = document.createElement('div');
+      bundles.forEach((bundleName) => {
+        const bundle = document.createElement('p');
+        const button = document.createElement('button');
+        const isOverriden = overrides.bundles?.hasOwnProperty(bundleName);
+
+        button.innerText = `${bundleName}: ${isOverriden ? '✅ local' : '🌎 public'}`;
+
+        button.onclick = (e) => {
+          e.preventDefault();
+
+          if (!overrides.bundles) {
+            overrides.bundles = {};
+          }
+
+          if (isOverriden) {
+            delete overrides.bundles[bundleName];
+          } else {
+            overrides.bundles[bundleName] = bundlesLocalOverrideMap[bundleName];
+          }
+
+          const overrideString  = JSON.stringify(overrides)
+          params.set('overrides', overrideString);
+
+          window.location.replace(window.location.pathname + '?' + params.toString());
+        }
+
+        bundle.append(button)
+        bundlesList.append(bundle);
+      });
+
+      debugPanel.append(bundlesList);
+
+      document.body.appendChild(debugPanel);
+    }
+
+
+    window.onload = () => {
+      featureTogglesPanel();
+    }
+  </script>
 </body>
 </html>
